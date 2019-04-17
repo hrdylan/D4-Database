@@ -1,0 +1,9 @@
+#add all nodes to database
+LOAD CSV FROM 'file:///nodes_connections.csv' as row
+CREATE (n:Node {id: toInteger(row[0]), x: toInteger(row[1]), y: toInteger(row[2]), d: toInteger(row[3]) })
+
+LOAD CSV FROM 'file:///nodes_connections.csv' as row
+UNWIND row AS col
+MATCH (n1:Node), (n2:Node)
+WHERE n1.id = toInteger(row[0]) AND n2.id = toInteger(col)
+CREATE (n1)-[:CONNECTED]->(n2)
